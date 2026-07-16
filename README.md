@@ -1,4 +1,27 @@
-# vinext-starter
+# FAA Part 107 Flight School
+
+An interactive study site for FAA Part 107 exam preparation, with six focused
+lessons, scenario checks, practice questions, and same-device progress tracking.
+
+## GitHub Pages
+
+Pushes to `main` automatically build a static Next.js export and deploy it to:
+
+https://arjangupta.github.io/faa_part_107_study_website/
+
+The Pages workflow lives in `.github/workflows/pages.yml`. In the repository's
+**Settings → Pages**, the source must be set to **GitHub Actions**.
+
+## Local development
+
+- `npm ci`
+- `npm run dev`
+
+The project also retains its Vinext/Cloudflare build for the original Sites
+environment. `npm run build:pages` creates the static `out/` directory used by
+GitHub Pages.
+
+## Original Vinext starter notes
 
 A clean full-stack starter running on
 [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and

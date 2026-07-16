@@ -364,7 +364,10 @@ export default function Home() {
   const lessonProgress = Math.round((completed.length / lessons.length) * 100);
   const overallProgress = Math.round(lessonProgress * 0.7 + bestScore * 0.3);
   const answeredCount = answers.filter((answer) => answer !== null).length;
-  const correctCount = answers.reduce((count, answer, index) => count + (answer === questions[index].answer ? 1 : 0), 0);
+  const correctCount = answers.reduce<number>(
+    (count, answer, index) => count + (answer === questions[index].answer ? 1 : 0),
+    0,
+  );
   const quizComplete = answeredCount === questions.length;
   const quizPercent = Math.round((correctCount / questions.length) * 100);
   const currentQuestion = questions[quizIndex];
