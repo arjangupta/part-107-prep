@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   ...(isGitHubPages
     ? {
         output: "export" as const,
-        basePath: "/faa_part_107_study_website",
+        basePath: "/part-107-prep",
         trailingSlash: true,
       }
     : {}),
