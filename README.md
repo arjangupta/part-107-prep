@@ -7,7 +7,7 @@ lessons, scenario checks, practice questions, and same-device progress tracking.
 
 Pushes to `main` automatically build a static Next.js export and deploy it to:
 
-https://arjangupta.github.io/faa_part_107_study_website/
+https://arjangupta.github.io/part-107-prep/
 
 The Pages workflow lives in `.github/workflows/pages.yml`. In the repository's
 **Settings → Pages**, the source must be set to **GitHub Actions**.
