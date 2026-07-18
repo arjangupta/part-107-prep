@@ -2,17 +2,7 @@
 
 import { useMemo, useState, useSyncExternalStore } from "react";
 
-type Lesson = {
-  id: number;
-  eyebrow: string;
-  title: string;
-  minutes: number;
-  summary: string;
-  objectives: string[];
-  concepts: { label: string; value: string; note: string }[];
-  scenario: { question: string; answer: string };
-  takeaways: string[];
-};
+import { lessons } from "./lesson-data";
 
 type QuizQuestion = {
   lessonId: number;
@@ -21,189 +11,6 @@ type QuizQuestion = {
   answer: number;
   explanation: string;
 };
-
-const lessons: Lesson[] = [
-  {
-    id: 1,
-    eyebrow: "Know the operating envelope",
-    title: "Rules & pilot responsibilities",
-    minutes: 18,
-    summary:
-      "Build the regulatory foundation: who is responsible, when Part 107 applies, and the limits that define a routine operation.",
-    objectives: [
-      "Identify the remote PIC’s authority and duties",
-      "Recall the core operating limits",
-      "Separate routine operations from waiver scenarios",
-    ],
-    concepts: [
-      { label: "Maximum altitude", value: "400 ft AGL", note: "Or within 400 ft of a structure, subject to the rule’s conditions." },
-      { label: "Maximum groundspeed", value: "87 kt", note: "Equivalent to 100 mph." },
-      { label: "Flight visibility", value: "3 SM", note: "Measured from the control station." },
-      { label: "Aircraft weight", value: "Under 55 lb", note: "Includes everything onboard or attached." },
-    ],
-    scenario: {
-      question:
-        "A client asks you to fly 600 ft AGL over open ground for a better survey image. The airspace is Class G. Can you accept the request as a routine Part 107 flight?",
-      answer:
-        "No. Class G removes the need for controlled-airspace authorization, but it does not remove the Part 107 altitude limit. The operation would need another lawful basis, such as an applicable waiver.",
-    },
-    takeaways: [
-      "The remote PIC is the final authority and is responsible for a safe operation.",
-      "VLOS, altitude, speed, visibility, and aircraft condition are separate constraints.",
-      "A waiver changes only the specific provision it authorizes.",
-    ],
-  },
-  {
-    id: 2,
-    eyebrow: "Read the airspace before you launch",
-    title: "Airspace & sectional charts",
-    minutes: 24,
-    summary:
-      "Turn chart symbols into go/no-go decisions, with special attention to controlled airspace, airports, obstacles, and hazards.",
-    objectives: [
-      "Distinguish Classes B, C, D, E, and G",
-      "Recognize common sectional chart boundaries",
-      "Know when FAA airspace authorization is required",
-    ],
-    concepts: [
-      { label: "Class B", value: "Solid blue", note: "Controlled airspace; authorization is required." },
-      { label: "Class C", value: "Solid magenta", note: "Controlled airspace; authorization is required." },
-      { label: "Class D", value: "Dashed blue", note: "Usually surrounds a towered airport." },
-      { label: "Class E to surface", value: "Dashed magenta", note: "Authorization is required when the surface area applies." },
-    ],
-    scenario: {
-      question:
-        "Your launch point is inside a dashed blue circle surrounding a towered airport. The planned altitude is only 100 ft AGL. What is the key preflight action?",
-      answer:
-        "Obtain FAA authorization before operating. A low planned altitude does not by itself remove the authorization requirement in Class D airspace.",
-    },
-    takeaways: [
-      "Airspace class is three-dimensional; read both lateral boundaries and altitude shelves.",
-      "Class G generally does not require airspace authorization, but every other operating rule still applies.",
-      "Check current NOTAMs and temporary flight restrictions in addition to the sectional chart.",
-    ],
-  },
-  {
-    id: 3,
-    eyebrow: "Translate weather into aircraft risk",
-    title: "Weather, METARs & TAFs",
-    minutes: 25,
-    summary:
-      "Decode aviation weather and connect pressure, temperature, wind, and stability to small-UAS performance.",
-    objectives: [
-      "Decode a basic METAR and TAF",
-      "Predict high density-altitude effects",
-      "Recognize wind, visibility, and stability hazards",
-    ],
-    concepts: [
-      { label: "METAR", value: "Observed", note: "A coded surface weather observation." },
-      { label: "TAF", value: "Forecast", note: "A terminal forecast for a defined area and period." },
-      { label: "High density altitude", value: "Less performance", note: "Warm, high, humid air reduces propeller and aircraft performance." },
-      { label: "Stable air", value: "Smooth / poor visibility", note: "Often brings steady precipitation and stratiform clouds." },
-    ],
-    scenario: {
-      question:
-        "The temperature rises sharply while pressure falls at a high-elevation site. Your payload and battery are unchanged. What performance trend should you expect?",
-      answer:
-        "Density altitude increases, so aircraft performance generally decreases. Expect less thrust margin and potentially shorter endurance; reassess the mission and manufacturer limits.",
-    },
-    takeaways: [
-      "Weather minimums are legal floors, not mission targets.",
-      "Compare surface observations, forecasts, and on-site conditions.",
-      "Gust spread and wind direction can matter more than the headline wind speed.",
-    ],
-  },
-  {
-    id: 4,
-    eyebrow: "Run the mission like a crew",
-    title: "Operations, CRM & airports",
-    minutes: 20,
-    summary:
-      "Plan disciplined missions using clear roles, concise communication, airport awareness, and sound aeronautical decision-making.",
-    objectives: [
-      "Assign PIC, visual observer, and support roles",
-      "Use standard traffic-pattern awareness",
-      "Apply risk-management tools before launch",
-    ],
-    concepts: [
-      { label: "PIC", value: "Final authority", note: "Owns the operational decision and safety outcome." },
-      { label: "Visual observer", value: "Supports VLOS", note: "Communicates hazards and aircraft position to the PIC." },
-      { label: "CTA F", value: "Common traffic", note: "Used for position awareness at many non-towered airports." },
-      { label: "PAVE", value: "Risk scan", note: "Pilot, Aircraft, enVironment, External pressures." },
-    ],
-    scenario: {
-      question:
-        "Mid-mission, a visual observer calls out a low helicopter approaching the work area. The customer urges you to finish one last pass. What should govern your decision?",
-      answer:
-        "Yield to the manned aircraft and prioritize safety. The remote PIC’s authority and duty are not displaced by customer pressure; pause or end the mission as necessary.",
-    },
-    takeaways: [
-      "Brief communication triggers before takeoff, including lost-link and intruder calls.",
-      "External pressure is a recognized hazard, not a reason to compress safety margins.",
-      "Never interfere with airport operations or manned aircraft.",
-    ],
-  },
-  {
-    id: 5,
-    eyebrow: "Protect the performance margin",
-    title: "Loading & aircraft performance",
-    minutes: 17,
-    summary:
-      "Understand how payload, center of gravity, maneuvering, batteries, and the environment reshape the safe flight envelope.",
-    objectives: [
-      "Explain center-of-gravity effects",
-      "Relate bank angle to load factor",
-      "Use manufacturer data for loading decisions",
-    ],
-    concepts: [
-      { label: "Added weight", value: "More demand", note: "Usually increases power required and reduces endurance." },
-      { label: "CG outside limits", value: "Unstable or uncontrollable", note: "Follow the aircraft’s loading instructions." },
-      { label: "Steeper bank", value: "Higher load factor", note: "The aircraft must produce more lift to hold altitude." },
-      { label: "Cold battery", value: "Less available power", note: "Temperature can reduce usable capacity and voltage performance." },
-    ],
-    scenario: {
-      question:
-        "A payload is mounted farther aft than on the previous flight, but total weight is still below the maximum. Is the weight check alone sufficient?",
-      answer:
-        "No. Total weight and center of gravity are separate limits. Confirm the new loading arrangement against the manufacturer’s approved instructions before flight.",
-    },
-    takeaways: [
-      "A legal weight can still produce an unsafe center of gravity.",
-      "Performance planning should include wind, temperature, elevation, payload, and reserve.",
-      "The remote PIC determines whether the aircraft can safely complete the operation.",
-    ],
-  },
-  {
-    id: 6,
-    eyebrow: "Be ready when the plan changes",
-    title: "Emergencies, night & Remote ID",
-    minutes: 22,
-    summary:
-      "Close the loop with abnormal procedures, night physiology and lighting, operations over people, and Remote ID awareness.",
-    objectives: [
-      "Prioritize actions during abnormal events",
-      "Recall night-operation preparation",
-      "Recognize Remote ID and over-people considerations",
-    ],
-    concepts: [
-      { label: "Emergency priority", value: "People first", note: "Maintain control, avoid aircraft and people, then troubleshoot." },
-      { label: "Night lighting", value: "3 SM visibility", note: "Anti-collision lighting must meet the applicable requirement; intensity may be reduced for safety." },
-      { label: "Dark adaptation", value: "Takes time", note: "Bright white light can quickly degrade night vision." },
-      { label: "Remote ID", value: "Operational compliance", note: "Know the aircraft, broadcast method, and location rules that apply." },
-    ],
-    scenario: {
-      question:
-        "At night, anti-collision lighting produces glare that makes it harder for the crew to see the aircraft’s attitude. Must it remain at full intensity?",
-      answer:
-        "No. The remote PIC may reduce the light’s intensity when necessary for safety, while still managing the operation in accordance with the night rule.",
-    },
-    takeaways: [
-      "Preprogram lost-link behavior for the actual site, not a generic default.",
-      "Night operations require current knowledge or training and compliant anti-collision lighting.",
-      "Operations over people depend on the aircraft category and the precise operating conditions.",
-    ],
-  },
-];
 
 const questions: QuizQuestion[] = [
   {
@@ -343,7 +150,7 @@ export default function Home() {
   const [view, setView] = useState<"learn" | "quiz" | "progress">("learn");
   const [quizIndex, setQuizIndex] = useState(0);
   const [answers, setAnswers] = useState<(number | null)[]>(Array(questions.length).fill(null));
-  const [showScenario, setShowScenario] = useState(false);
+  const [expandedScenario, setExpandedScenario] = useState<number | null>(null);
   const progressJson = useSyncExternalStore(subscribeToProgress, getProgressSnapshot, () => DEFAULT_PROGRESS);
   const progress = useMemo(() => {
     try {
@@ -386,7 +193,7 @@ export default function Home() {
 
   function openLesson(id: number) {
     writeProgress({ ...progress, activeLesson: id });
-    setShowScenario(false);
+    setExpandedScenario(null);
     setView("learn");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -395,7 +202,7 @@ export default function Home() {
     const nextCompleted = completed.includes(activeLesson) ? completed : [...completed, activeLesson].sort();
     const next = lessons.find((item) => item.id > activeLesson && !completed.includes(item.id));
     writeProgress({ ...progress, completed: nextCompleted, activeLesson: next?.id ?? activeLesson });
-    setShowScenario(false);
+    setExpandedScenario(null);
   }
 
   function chooseAnswer(optionIndex: number) {
@@ -452,8 +259,8 @@ export default function Home() {
         <aside className="sidebar">
           <div className="sidebar-intro">
             <span className="overline">Study plan</span>
-            <h2>Six flights to ready.</h2>
-            <p>About 2 hours of focused lessons, then test the weak spots.</p>
+            <h2>Six deep ground-school modules.</h2>
+            <p>About 4.5 hours of rigorous study, worked scenarios, and active recall.</p>
           </div>
           <div className="lesson-list">
             {lessons.map((item) => {
@@ -505,6 +312,36 @@ export default function Home() {
                 </div>
               </section>
 
+              <section className="deep-study">
+                <div className="section-heading">
+                  <div><span className="overline">Ground school</span><h2>Build the mental model</h2></div>
+                  <span className="section-count">{lesson.sections.length} chapters</span>
+                </div>
+                <div className="chapter-list">
+                  {lesson.sections.map((section, index) => (
+                    <article className="study-chapter" key={section.title}>
+                      <div className="chapter-number">{String(index + 1).padStart(2, "0")}</div>
+                      <div className="chapter-content">
+                        <h3>{section.title}</h3>
+                        <p className="chapter-lead">{section.lead}</p>
+                        {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                        {section.points && (
+                          <ul className="study-points">
+                            {section.points.map((point) => <li key={point}>{point}</li>)}
+                          </ul>
+                        )}
+                        {section.example && (
+                          <aside className="worked-example">
+                            <strong>{section.example.label}</strong>
+                            <p>{section.example.text}</p>
+                          </aside>
+                        )}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+
               <section className="module-section">
                 <div className="section-heading">
                   <div><span className="overline">Memory anchors</span><h2>The numbers and ideas that matter</h2></div>
@@ -521,20 +358,50 @@ export default function Home() {
                 </div>
               </section>
 
-              <section className="scenario-card">
-                <div className="scenario-top">
-                  <span className="scenario-badge">Scenario check</span>
-                  <span>Think like the remote PIC</span>
+              <section className="scenario-workshop">
+                <div className="section-heading">
+                  <div><span className="overline">Scenario workshop</span><h2>Reason through the facts</h2></div>
+                  <span className="section-count">{lesson.scenarios.length} cases</span>
                 </div>
-                <h2>{lesson.scenario.question}</h2>
-                {showScenario ? (
-                  <div className="scenario-answer" role="status">
-                    <strong>Decision</strong>
-                    <p>{lesson.scenario.answer}</p>
-                  </div>
-                ) : (
-                  <button className="secondary-button" onClick={() => setShowScenario(true)}>Reveal the safest answer</button>
-                )}
+                <div className="scenario-stack">
+                  {lesson.scenarios.map((scenario, index) => {
+                    const isOpen = expandedScenario === index;
+                    return (
+                      <article className="scenario-card" key={scenario.question}>
+                        <div className="scenario-top">
+                          <span className="scenario-badge">Case {index + 1}</span>
+                          <span>Commit to an answer before revealing</span>
+                        </div>
+                        <h2>{scenario.question}</h2>
+                        {!isOpen ? (
+                          <button className="secondary-button" onClick={() => setExpandedScenario(index)}>Reveal the worked decision</button>
+                        ) : (
+                          <div className="scenario-answer" role="status">
+                            <strong>Decision</strong>
+                            <p>{scenario.answer}</p>
+                            <ol>
+                              {scenario.reasoning.map((step) => <li key={step}>{step}</li>)}
+                            </ol>
+                            <div className="exam-trap"><b>Exam trap:</b> {scenario.trap}</div>
+                          </div>
+                        )}
+                      </article>
+                    );
+                  })}
+                </div>
+              </section>
+
+              <section className="mastery-grid">
+                <article className="trap-panel">
+                  <span className="overline">Common traps</span>
+                  <h2>Where plausible answers go wrong</h2>
+                  <ul>{lesson.traps.map((trap) => <li key={trap}>{trap}</li>)}</ul>
+                </article>
+                <article className="recall-panel">
+                  <span className="overline">Closed-book check</span>
+                  <h2>Can you produce the answer?</h2>
+                  <ol>{lesson.recall.map((prompt) => <li key={prompt}>{prompt}</li>)}</ol>
+                </article>
               </section>
 
               <section className="takeaways">
@@ -548,9 +415,10 @@ export default function Home() {
 
               <footer className="lesson-footer">
                 <div className="source-links">
-                  <span>Built from current FAA references</span>
-                  <a href="https://www.faa.gov/training_testing/testing/acs" target="_blank" rel="noreferrer">Airman Certification Standards ↗</a>
-                  <a href="https://www.faa.gov/uas/commercial_operators/become_a_drone_pilot" target="_blank" rel="noreferrer">FAA testing guide ↗</a>
+                  <span>Primary references for this module</span>
+                  {lesson.sources.map((source) => (
+                    <a key={source.href} href={source.href} target="_blank" rel="noreferrer">{source.label} ↗</a>
+                  ))}
                 </div>
                 <button className={`primary-button ${completed.includes(lesson.id) ? "completed" : ""}`} onClick={markComplete}>
                   {completed.includes(lesson.id) ? "Completed ✓" : lesson.id === lessons.length ? "Finish lessons" : "Complete & continue"}
