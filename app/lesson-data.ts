@@ -97,9 +97,9 @@ export const lessons: Lesson[] = [
         paragraphs: [
           "Before flight, the remote PIC must assess the operating environment. That includes local weather; local airspace and flight restrictions; the location of people and property; ground hazards; and any other condition that could affect safety. Everyone directly participating must be briefed on operating conditions, emergency procedures, contingency procedures, roles, responsibilities, and hazards.",
           "The remote PIC must ensure control links work correctly, enough power exists for the planned operation, attached objects are secure and do not adversely affect controllability, and the aircraft is in a condition for safe operation. There is no standard airworthiness certificate requirement for ordinary Part 107 aircraft, so this condition-for-safe-operation determination rests heavily on the remote PIC.",
-          "Upon request, the remote PIC must present the remote pilot certificate and identification and make required documents, records, and the small UAS available to the FAA. Accidents must be reported to the FAA within 10 days when they cause serious injury, loss of consciousness, or property damage—excluding the aircraft itself—of at least $500 to repair or replace, whichever is lower.",
+          "Upon request, the remote PIC must present the remote pilot certificate and identification and make required documents, records, and the small UAS available to the FAA. Accidents must be reported to the FAA within 10 days when they cause serious injury, loss of consciousness, or property damage—excluding the aircraft itself—exceeding $500 to repair or replace, whichever is lower.",
         ],
-        example: { label: "Threshold trap", text: "A crash destroys a $1,200 drone and scratches a $300 vehicle panel. No report is triggered by property cost alone because damage to the drone is excluded and the other property damage is below $500." },
+        example: { label: "Threshold trap", text: "A crash destroys a $1,200 drone and scratches a $300 vehicle panel. No report is triggered by property cost alone because damage to the drone is excluded and the other property damage does not exceed $500." },
       },
       {
         title: "Waiver versus authorization",
