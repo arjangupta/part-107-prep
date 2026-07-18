@@ -262,3 +262,79 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(14, 107, 97, .28
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+
+/* Rigorous lesson content */
+.deep-study, .scenario-workshop, .mastery-grid { margin-bottom: 72px; }
+.deep-study .section-count, .scenario-workshop .section-count {
+  color: var(--muted); font-family: inherit; font-size: 11px; font-weight: 900;
+  letter-spacing: .1em; text-transform: uppercase; line-height: 1;
+}
+.chapter-list { border-top: 1px solid var(--line); }
+.study-chapter {
+  display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 28px;
+  padding: 42px 0; border-bottom: 1px solid var(--line);
+}
+.chapter-number {
+  padding-top: 5px; color: var(--coral); font-family: Georgia, serif;
+  font-size: 24px; font-weight: 600;
+}
+.chapter-content { max-width: 790px; }
+.chapter-content h3 {
+  margin: 0 0 10px; color: var(--ink); font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(26px, 3vw, 36px); font-weight: 500; letter-spacing: -.035em;
+}
+.chapter-content > p {
+  margin: 16px 0 0; color: #43504c; font-size: 15px; line-height: 1.82;
+}
+.chapter-content .chapter-lead {
+  margin: 0 0 24px; color: var(--teal-dark); font-size: 17px; font-weight: 700; line-height: 1.6;
+}
+.study-points {
+  display: grid; gap: 10px; margin: 24px 0 0; padding: 20px 24px 20px 44px;
+  border-radius: 16px; background: #f1f6f3;
+}
+.study-points li { padding-left: 4px; color: #43504c; font-size: 13px; line-height: 1.65; }
+.study-points li::marker { color: var(--teal); }
+.worked-example {
+  margin-top: 25px; padding: 21px 24px; border-left: 4px solid var(--lime);
+  border-radius: 0 14px 14px 0; background: var(--ink); color: white;
+}
+.worked-example strong {
+  color: var(--lime); font-size: 10px; letter-spacing: .13em; text-transform: uppercase;
+}
+.worked-example p { margin: 8px 0 0; color: #d7e3df; font-size: 13px; line-height: 1.7; }
+.scenario-stack { display: grid; gap: 18px; }
+.scenario-workshop .scenario-card { margin-bottom: 0; }
+.scenario-answer ol { margin: 18px 0 0; padding-left: 23px; }
+.scenario-answer li { margin: 9px 0; padding-left: 6px; color: #634d43; font-size: 13px; line-height: 1.6; }
+.scenario-answer li::marker { color: var(--coral); font-weight: 900; }
+.exam-trap {
+  margin-top: 18px; padding: 12px 14px; border-radius: 10px;
+  background: #ffe7df; color: #823e2e; font-size: 12px; line-height: 1.5;
+}
+.mastery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.trap-panel, .recall-panel {
+  padding: 32px; border: 1px solid var(--line); border-radius: 22px; background: var(--white);
+}
+.trap-panel { border-top: 5px solid var(--coral); }
+.recall-panel { border-top: 5px solid var(--teal); }
+.trap-panel h2, .recall-panel h2 {
+  margin: 10px 0 22px; font-family: Georgia, "Times New Roman", serif;
+  font-size: 25px; font-weight: 500; letter-spacing: -.03em;
+}
+.trap-panel ul, .recall-panel ol { margin: 0; padding-left: 21px; }
+.trap-panel li, .recall-panel li {
+  margin: 12px 0; padding-left: 5px; color: var(--muted); font-size: 13px; line-height: 1.55;
+}
+.trap-panel li::marker { color: var(--coral); }
+.recall-panel li::marker { color: var(--teal); font-weight: 900; }
+
+@media (max-width: 760px) {
+  .study-chapter { grid-template-columns: 36px minmax(0, 1fr); gap: 12px; padding: 32px 0; }
+  .chapter-number { font-size: 17px; }
+  .chapter-content > p { font-size: 14px; line-height: 1.75; }
+  .chapter-content .chapter-lead { font-size: 15px; }
+  .mastery-grid { grid-template-columns: 1fr; }
+  .trap-panel, .recall-panel { padding: 25px 21px; }
+}
