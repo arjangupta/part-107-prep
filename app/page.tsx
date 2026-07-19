@@ -198,9 +198,18 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function markComplete() {
-    const nextCompleted = completed.includes(activeLesson) ? completed : [...completed, activeLesson].sort();
-    const next = lessons.find((item) => item.id > activeLesson && !completed.includes(item.id));
+  function toggleLessonComplete() {
+    if (completed.includes(activeLesson)) {
+      writeProgress({
+        ...progress,
+        completed: completed.filter((id) => id !== activeLesson),
+        activeLesson,
+      });
+      return;
+    }
+
+    const nextCompleted = [...completed, activeLesson].sort();
+    const next = lessons.find((item) => item.id > activeLesson && !nextCompleted.includes(item.id));
     writeProgress({ ...progress, completed: nextCompleted, activeLesson: next?.id ?? activeLesson });
     setExpandedScenario(null);
   }
@@ -420,8 +429,16 @@ export default function Home() {
                     <a key={source.href} href={source.href} target="_blank" rel="noreferrer">{source.label} ↗</a>
                   ))}
                 </div>
-                <button className={`primary-button ${completed.includes(lesson.id) ? "completed" : ""}`} onClick={markComplete}>
-                  {completed.includes(lesson.id) ? "Completed ✓" : lesson.id === lessons.length ? "Finish lessons" : "Complete & continue"}
+                <button
+                  className={`primary-button ${completed.includes(lesson.id) ? "completed" : ""}`}
+                  onClick={toggleLessonComplete}
+                  aria-pressed={completed.includes(lesson.id)}
+                >
+                  {completed.includes(lesson.id)
+                    ? "Mark incomplete"
+                    : lesson.id === lessons.length
+                      ? "Finish lessons"
+                      : "Complete & continue"}
                 </button>
               </footer>
             </div>
